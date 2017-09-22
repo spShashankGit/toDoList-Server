@@ -1,0 +1,2 @@
+//Query or toDoList table
+db.toDoList.insertOne({"date":"Tue Sep 12 2017 00:00:00 GMT+0530 (IST)","userName":"Shashank","activities":[{"activityName":"MEAN 4","status":"open","priorit":"High","editable":true,"type":"work"}]})
