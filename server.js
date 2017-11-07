@@ -76,19 +76,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 mongoose.model('users1', { name: String });
 
-
-//Get all the documents of a collection
-db.collection(collectionName).find({}, function (err, users) {
-    if (err) throw err;
-    // object of all the users
-    console.log("Cp1", users);
-});
-
 //Home Link
 app.get('/', function (req, res) {
     res.send('Hello World!1234567890')
 })
-
 
 //Get All Data
 app.get('/getAllData', function (req, res) {
@@ -107,7 +98,6 @@ app.get('/getTodayData', function (req, res) {
     var temp = today.toString();
     console.log(temp);
     db.collection(collectionName).find({}).toArray(function (err, result) {
-        console.log("result 123123", result, collectionName);
         if (result.length == 0)
             res.send([{ "msg": "No results Found" }]);
         else if (result.length >= 1)
@@ -118,7 +108,7 @@ app.get('/getTodayData', function (req, res) {
 });
 
 //Post request
-app.post('/process_post', function (req, res) {
+app.post('/insertTask', function (req, res) {
     console.log(req, req.body.id);
     var autoGenID = { _id: req.body._id };
     var newvalues = {
