@@ -26,6 +26,11 @@ const db = mongoose.connection;
 var collectionName = userName;
 const masterTable = "masterRecord";
 
+//Port listner
+app.listen(3000, function () {
+    console.log('Example app listening on port 3000!')
+});
+
 // Allow CORS
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -78,76 +83,49 @@ mongoose.model('users1', { name: String });
 
 //Home Link
 app.get('/', function (req, res) {
-    res.send('Hello World!1234567890')
+    res.send('Hello World!')
 })
 
-//Get All Data
-app.get('/getAllData', function (req, res) {
-    db.collection(collectionName).find({}).toArray(function (err, result) {
-        if (result)
-            res.send(result);
-        else
-            res.send(err);
-    });
-});
 
-//Get Today's data
-app.get('/getTodayData', function (req, res) {
-    var today = new Date();
-    today.setHours(0, 0, 0, 0);
-    var temp = today.toString();
-    console.log(temp);
-    db.collection(collectionName).find({}).toArray(function (err, result) {
-        if (result.length == 0)
-            res.send([{ "msg": "No results Found" }]);
-        else if (result.length >= 1)
-            res.send(result);
-        else
-            res.send(err);
-    });
-});
-
-//Post request
-app.post('/insertTask', function (req, res) {
-    console.log(req, req.body.id);
-    var autoGenID = { _id: req.body._id };
-    var newvalues = {
-        id: req.body.id,
-        name: req.body.name,
-        values: req.body.values
+/*
+Search in DB
+If parameters are passed,where clause will be implemented,
+else all the records will be returned.
+*/
+function getData(param, value) {
+    if (param && value) {
+        db.collection(collectionName).find({}).toArray(function (err, result) {
+            if (result)
+                return (result);
+            else
+                return (err);
+        });
     }
-    var query = { name: (req.body.name) };
-    db.collection(collectionName).find(query).toArray(function (err, result) {
-        //checking if the document exist for the requested ID
-        console.log(Query, query, req.body.id);
+    else {
+        db.collection(collectionName).find({ param: value }).toArray(function (err, result) {
+            if (result)
+                return (result);
+            else
+                return (err);
+        });
+    }
+
+};
+
+//Insert Request
+function createNewTask(task) {
+    db.collection(collectionName).InsertOne(task, function (err, res) {
         if (err) throw err;
-        console.log(result);
-        console.log("Checking the node")
+        console.log("ch");
+        //db.close();
     });
+};
+
+//Update Request
+function updateExistingTask(task) {
     db.collection(collectionName).updateOne(query, newvalues, function (err, res) {
         if (err) throw err;
         console.log("ch");
         //db.close();
     });
-    res.end(JSON.stringify(req.body));
-});
-
-//Post an acivity 
-app.post('/addActivity', function (req, res) {
-    console.log("Add an activity ", req.body);
-    // res.send([{ "msg": "Success" }]);
-    // db.collection(collectionName).find({})
-    var tempDate = new Date();
-    tempDate.setHours(0, 0, 0, 0);
-    tempDate = tempDate.toString();
-    db.collection(collectionName).find({ date: tempDate }).toArray(function (err, result) {
-        console.log("~ result ", result, collectionName);
-        var activities = result.activities;
-        activities.push(req.body);
-        res.send(result);
-    });
-});
-//Port listner
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
-});
+};
