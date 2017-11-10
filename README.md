@@ -1,6 +1,9 @@
-# toDoList-Server
+# ToDoList-Server
 
-Server for To-Do-List app. ExpressJS will listen to the request from UI and data is send in response. Error handling is also taken into account for seamless user experience and better maintainablity of code.
+Server for To-Do-List app. 
+NodeJS - > Server Env.
+ExpressJS -> Listen HTTP request.
+MongoDb -> Database
 
 Server Technology Stack
 ````
