@@ -16,4 +16,5 @@ Database
 NoSQL DB is the choice of DB, because of changing nature of data and schema. Moreover NoSQL DB have low cost serching opetations.
 ````
 ## License & copyright
-Licensed under the [MIT License] (LICENSE).
+
+Licensed under the [MIT License](LICENSE).
